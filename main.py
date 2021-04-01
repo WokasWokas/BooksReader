@@ -13,6 +13,15 @@ commands = [['getbooks', 'Return list with books'], ['openbook', 'Open book'], [
 def getSpace(minValue: int, maxValue: int = 15):
     return ' ' * (maxValue - minValue)
 
+def checkFolder():
+    if os.path.isdir(f'{PATH}\\books') == True:
+        return
+    else:
+        try:
+            os.makedirs(name='books', mode=0o777, exist_ok=False)
+        except OSError as error:
+            exit(error)
+
 def getHelp():
     print('#', 'command' + getSpace(len('command')), 'info')
     for command in commands: print('#' if command[0] == 'help' or command[0] == 'exit' or command[0] == 'clear' else commands.index(command) + 1, 
@@ -41,14 +50,14 @@ def checkOption(option:str):
     elif option == '1' or option == 'getbooks': getBooks()
     elif option == '2' or option == 'openbook': openBook()
 
-bookname = ''
 def main():
+    checkFolder()
+    clearScreen()
     while True:
-        option = input(f'{bookname} > ')
+        option = input(' > ')
         checkOption(option)
 
 try:
-    clearScreen()
     main()
 except KeyboardInterrupt:
     print('\nUser close program')
